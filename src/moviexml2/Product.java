@@ -1,6 +1,8 @@
 package moviexml2;
 
-public abstract class Product
+import java.io.Serializable;
+
+public abstract class Product implements Serializable
 {
 
 	private String id;

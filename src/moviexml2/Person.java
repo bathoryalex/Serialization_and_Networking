@@ -1,6 +1,8 @@
 package moviexml2;
 
-public class Person
+import java.io.Serializable;
+
+public class Person implements Serializable
 {
 	private String firstName;
 	private String lastName;

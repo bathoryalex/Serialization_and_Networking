@@ -1,5 +1,10 @@
 package moviexml2;
 
+import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +30,32 @@ public class RentManager
 
         System.out.println(sumPrices(lista));
 
+        try
+        {
+            Socket socket = new Socket("127.0.0.1", 1234);
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+            outputStream.writeObject(Command.PUT);
+            outputStream.write(0); /*a szerver while feltetelehez szukseges minden objektum elott egy 0-t atkuldeni.*/
+            outputStream.writeObject(movie1);
+            outputStream.write(0);
+            outputStream.writeObject(person1);
+
+            outputStream.writeObject(Command.GET);
+            List<Object> fajlObjektumok = (List) inputStream.readObject();
+            for(Object i: fajlObjektumok)
+            {
+                System.out.println(i);
+            }
+
+
+            outputStream.writeObject(Command.EXIT);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     public static long sumPrices(List<Buyable> lista)
     {
@@ -35,4 +66,6 @@ public class RentManager
         }
         return osszeg;
     }
+
+
 }
